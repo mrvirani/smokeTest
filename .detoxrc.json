@@ -1,0 +1,22 @@
+{
+  "apps": {
+    "android.debug": {
+      "type": "android.apk",
+      "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "testBinaryPath": "android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk",
+      "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -x lint"
+    }
+  },
+  "devices": {
+    "emulator": {
+      "type": "android.emulator",
+      "avdName": "pixel_api_30"
+    }
+  },
+  "configurations": {
+    "android.emu.debug": {
+      "device": "emulator",
+      "app": "android.debug"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "testEnvironment": "node",
+  "testRunner": "jest-circus/runner",
+  "reporters": ["default"],
+  "testTimeout": 120000
+}
