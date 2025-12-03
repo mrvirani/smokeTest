@@ -14,7 +14,7 @@
     "detox:build": "detox build -c android.emu.debug",
     "detox:test": "detox test -c android.emu.debug --cleanup --loglevel trace",
     "detox:test:ci": "detox test -c android.emu.debug --cleanup --loglevel trace --ci"
-  },
+},
   "dependencies": {
     "react": "19.0.0",
     "react-native": "0.78.0"

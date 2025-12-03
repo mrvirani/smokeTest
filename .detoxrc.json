@@ -7,15 +7,12 @@
       "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -x lint"
     }
   },
-  "devices": {
-    "emulator": {
-      "type": "android.emulator",
-      "avdName": "pixel_api_30"
-    }
-  },
   "configurations": {
     "android.emu.debug": {
-      "device": "emulator",
+      "device": {
+        "type": "android.emulator",
+        "avdName": "pixel_api_30"
+      },
       "app": "android.debug"
     }
   }
