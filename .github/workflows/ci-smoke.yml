@@ -1,4 +1,4 @@
-name: CI (Smoke + Quality)
+name: CI (Smoke + Quality + E2E)
 
 # Run on pushes and PRs for main, smoke-test, staging, and version branches
 on:
@@ -107,7 +107,44 @@ jobs:
           npm run smoke || echo "Smoke test script not found"
 
 # ==============================
-# 4) SECURITY AUDIT
+# 4) E2E DETOX TESTS
+# ==============================
+  e2e:
+    name: E2E Tests (Detox Android)
+    runs-on: ubuntu-latest
+    needs: smoke
+    timeout-minutes: 40
+    if: github.ref == 'refs/heads/smoke-test' || github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps || npm install
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: true
+
+      - name: Build Detox app
+        run: npx detox build -c android.emu.debug
+
+      - name: Run Detox tests
+        run: npx detox test -c android.emu.debug --cleanup --loglevel trace
+
+# ==============================
+# 5) SECURITY AUDIT
 # ==============================
   security:
     name: Security Audit
@@ -129,7 +166,7 @@ jobs:
         run: npm audit --audit-level=moderate || echo "Security issues found (non-blocking)"
 
 # ==============================
-# 5) FORMAT CHECK (optional, non-blocking)
+# 6) FORMAT CHECK (optional, non-blocking)
 # ==============================
   format:
     name: Format Validation
